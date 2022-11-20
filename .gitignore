@@ -7,6 +7,8 @@ scratch
 # ------------- AppDaemon -------------- #
 /appdaemon_config/*
 !/appdaemon_config/apps
+!/appdaemon_config/requirements.txt
+!/appdaemon_config/appdaemon.yaml
 # ------------- End AppDaemon -------------- #
 
 # ------------- Home Assistant -------------- #

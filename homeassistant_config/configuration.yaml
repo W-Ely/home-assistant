@@ -20,7 +20,11 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 192.168.1.0/24  # Local Lan
-    - 172.10.0.0/24  # Docker network
+    # I've found this to be a little tricky.
+    # Homa Assistant complains with something like
+    # `Received X-Forwarded-For header from an untrusted proxy 172.17.0.3`
+    # adjust this cidr block.
+    - 172.20.0.0/24  # Docker network
 
 logger:
   default: info
