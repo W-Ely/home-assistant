@@ -1,3 +1,43 @@
+
+# ------------- Custom -------------- #
+.DS_Store
+scratch
+# ------------- End Custom -------------- #
+
+# ------------- AppDaemon -------------- #
+/appdaemon_config/*
+!/appdaemon_config/apps
+# ------------- End AppDaemon -------------- #
+
+# ------------- Home Assistant -------------- #
+/homeassistant_config/*
+!/homeassistant_config/*.yaml
+# ------------- End Home Assistant -------------- #
+
+# ------------- DuckDNS -------------- #
+/duckdns_config/*
+# ------------- End DuckDNS -------------- #
+
+# ------------- Swag -------------- #
+# This chain keeps the few edited .conf files.
+/swag_config/*
+!/swag_config/nginx
+/swag_config/nginx/*
+!/swag_config/nginx/proxy-confs
+/swag_config/nginx/proxy-confs/*
+!/swag_config/nginx/proxy-confs/*.conf
+!/swag_config/nginx/site-confs
+/swag_config/nginx/site-confs/*
+!/swag_config/nginx/site-confs/*.conf
+# ------------- End Swag -------------- #
+
+
+# ------------- VSCode -------------- #
+/vscode_config/*
+# ------------- End VSCode -------------- #
+
+
+# ------------- Python -------------- #
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +167,15 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+# ------------- End Python -------------- #
+
+# ---------- Catch All ---------- #
+# Just in case I do something stupid
+**/secrets.yaml
+**/*.pem
+**/*.crt
+**/*.key
+.env
+**/*.log
+**/*.log.*
+# ---------- End Catch All ------- #

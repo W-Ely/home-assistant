@@ -1,0 +1,4 @@
+slack:
+  module: slack
+  class: Slack
+  slack_web_hook_uuid: !secret slack_web_hook_uuid

@@ -1,0 +1,85 @@
+version: '3'
+services:
+  # Not yet working behind VPN ;-/
+  # duckdns:
+  #   image: lscr.io/linuxserver/duckdns:latest
+  #   container_name: duckdns
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=America/Los_Angeles
+  #     - SUBDOMAINS=paysinger
+  #     - TOKEN=${DUCKDNS_TOKEN}
+  #     - LOG_FILE=false
+  #   volumes:
+  #     - ./duckdns_config:/config
+  #   restart: unless-stopped
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - EMAIL=${SWAG_EMAIL}
+      - URL=${SWAG_URL}
+      - SUBDOMAINS=wildcard
+      - VALIDATION=duckdns
+      - DUCKDNSTOKEN=${DUCKDNS_TOKEN}
+    volumes:
+      - ./swag_config:/config
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    volumes:
+      - ./homeassistant_config:/config
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 8123:8123
+    restart: unless-stopped
+    privileged: true
+  appdaemon:
+    container_name: appdaemon
+    image: acockburn/appdaemon:latest
+    depends_on:
+      - homeassistant
+    volumes:
+      - ./appdaemon_config:/conf
+      - /etc/localtime:/etc/localtime:ro
+      #  - /var/run/docker.sock:/var/run/docker.sock # probably don't use this.
+    restart: unless-stopped
+    environment:
+      - HA_URL=http://homeassistant:8123
+      - DASH_URL="http://localhost:5050"
+      # Due to https://github.com/AppDaemon/appdaemon/blob/dev/dockerStart.sh#L31
+      # having this set in the env overwrites the !secret in the appdaemon.yaml which risk
+      # checking it in. Instead rely on the !secret in the secret.yaml
+      # - TOKEN=${APPDAEMON_TOKEN}
+    ports:
+      - 5050:5050
+  vscode:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: vscode
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - PASSWORD=${VSCODE_PASSWORD}
+      # - HASHED_PASSWORD= #optional
+      # - SUDO_PASSWORD=${SUDO_PASSWORD} #optional
+      # - SUDO_PASSWORD_HASH= #optional
+      - PROXY_DOMAIN=${VSCODE_PROXY_DOMAIN}
+      # - DEFAULT_WORKSPACE=/home-assistant #optional
+    volumes:
+      - ./vscode_config:/config
+      - ./:/home-assistant
+    ports:
+      - 8443:8443
+    restart: unless-stopped
