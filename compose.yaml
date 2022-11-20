@@ -1,6 +1,5 @@
 version: '3'
 services:
-  # Not yet working behind VPN ;-/
   duckdns:
     image: lscr.io/linuxserver/duckdns:latest
     container_name: duckdns
@@ -11,6 +10,7 @@ services:
       - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
       - TOKEN=${DUCKDNS_TOKEN}
       - LOG_FILE=false
+      # This isn't stock, passing WANIP to the duck.sh script to override the containers default function.  This supports working behind VPN.
       - WANIP=${WANIP}
     volumes:
       - ./duckdns_config:/config
