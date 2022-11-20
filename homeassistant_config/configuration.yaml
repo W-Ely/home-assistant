@@ -24,7 +24,7 @@ http:
     # Homa Assistant complains with something like
     # `Received X-Forwarded-For header from an untrusted proxy 172.17.0.3`
     # adjust this cidr block.
-    - 172.20.0.0/24  # Docker network
+    - 172.16.0.0/12  # Docker network
 
 logger:
   default: info
