@@ -8,7 +8,7 @@ services:
   #     - PUID=1000
   #     - PGID=1000
   #     - TZ=America/Los_Angeles
-  #     - SUBDOMAINS=paysinger
+  #     - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
   #     - TOKEN=${DUCKDNS_TOKEN}
   #     - LOG_FILE=false
   #   volumes:
