@@ -1,19 +1,21 @@
 version: '3'
 services:
   # Not yet working behind VPN ;-/
-  # duckdns:
-  #   image: lscr.io/linuxserver/duckdns:latest
-  #   container_name: duckdns
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=America/Los_Angeles
-  #     - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
-  #     - TOKEN=${DUCKDNS_TOKEN}
-  #     - LOG_FILE=false
-  #   volumes:
-  #     - ./duckdns_config:/config
-  #   restart: unless-stopped
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
+      - TOKEN=${DUCKDNS_TOKEN}
+      - LOG_FILE=false
+      - WANIP=${WANIP}
+    volumes:
+      - ./duckdns_config:/config
+      - ./duckdns_config/duck.sh:/app/duck.sh
+    restart: unless-stopped
   swag:
     image: lscr.io/linuxserver/swag:latest
     container_name: swag
@@ -84,12 +86,3 @@ services:
     ports:
       - 8443:8443
     restart: unless-stopped
-
-# Might play with this if I keep getting networking issues.
-# networks:
-#   default:
-#     driver: bridge
-#     ipam:
-#       driver: default
-#       config:
-#       - subnet:  172.10.0.0/24
